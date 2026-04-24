@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+export const API_BASE = import.meta.env.VITE_API_URL || "https://full-stack-project-4-olmj.onrender.com/api";
 
 export const runTool = async (tool, category, args, file = null) => {
   const formData = new FormData();

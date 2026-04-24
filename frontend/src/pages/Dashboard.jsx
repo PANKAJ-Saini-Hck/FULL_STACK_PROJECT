@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Activity, ShieldCheck, ShieldAlert, Cpu, Terminal as TerminalIcon, Zap, Globe, Lock, Search } from 'lucide-react';
+import { API_BASE } from '../utils/api';
 
 const Dashboard = () => {
   const [status, setStatus] = useState(null);
@@ -9,7 +10,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/status');
+        const res = await axios.get(`${API_BASE}/status`);
         setStatus(res.data.status);
       } catch (err) {
         console.error("Failed to fetch system status", err);

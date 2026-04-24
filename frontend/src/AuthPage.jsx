@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { User, Lock, ArrowRight, UserPlus, LogIn, Mail } from 'lucide-react';
-
-const API_URL = 'http://localhost:5000/api';
+import { API_BASE as API_URL } from './utils/api';
 
 function AuthPage({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
