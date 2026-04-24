@@ -1,0 +1,38 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Frontend Build
+frontend/dist/
+frontend/build/
+
+# Backend Data
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/cat_tmp/
+backend/*.db
+backend/*.db-journal
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Large Binaries (Download them instead or use Docker)
+backend/bin/*.exe
+backend/bin/*.bat
+backend/bin/exiftool_files/
+backend/hashcat.7z
+backend/hashcat.zip
+backend/john.zip
+
+# Misc
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Keep the uploads folder structure but not files
+!backend/uploads/
