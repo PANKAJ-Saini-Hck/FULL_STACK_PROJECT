@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log
+backend/bin/*.exe
+backend/bin/*.bat
+backend/bin/*.jar
+backend/bin/exiftool_files
+backend/uploads/*
+frontend
+.git
+.gitignore
+*.docx
+*.pptx
+README.md
+setup_tools.ps1
+start_toolkit.bat
+start_toolkit.ps1

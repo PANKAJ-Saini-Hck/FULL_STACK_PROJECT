@@ -20,8 +20,16 @@ const checkToolInstalled = (cmd) => {
 
   try {
     const whichCmd = process.platform === 'win32' ? 'where' : 'which';
-    execSync(`${whichCmd} ${cmd}`, { stdio: 'ignore' });
-    return true;
+    try {
+      execSync(`${whichCmd} ${cmd}`, { stdio: 'ignore' });
+      return true;
+    } catch (e) {
+      if (cmd === 'python' && process.platform !== 'win32') {
+        execSync(`${whichCmd} python3`, { stdio: 'ignore' });
+        return true;
+      }
+      return false;
+    }
   } catch (e) {
     return false;
   }
