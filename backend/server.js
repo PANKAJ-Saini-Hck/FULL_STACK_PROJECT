@@ -81,8 +81,8 @@ app.post('/api/run', upload.single('file'), async (req, res) => {
         // Uploaded file (custom wordlist or pasted words saved to disk by multer)
         if (file) {
           wordlistArg = file.path;
-          db.run(`INSERT INTO uploads (original_name, stored_name, file_path, file_type, size) VALUES (?, ?, ?, ?, ?)`,
-            [file.originalname, file.filename, file.path, file.mimetype, file.size]);
+          db.prepare(`INSERT INTO uploads (original_name, stored_name, file_path, file_type, size) VALUES (?, ?, ?, ?, ?)` )
+            .run(file.originalname, file.filename, file.path, file.mimetype, file.size);
         }
       } else if (wlMode === 'rockyou') {
         const rycPath = path.join(BIN_DIR, 'rockyou.txt');
@@ -106,8 +106,8 @@ app.post('/api/run', upload.single('file'), async (req, res) => {
     console.log(`[CRACK] ${pythonExe} ${crackerScript} ${crackerArgs.join(' ')}`);
     const result = await runTool(pythonExe, [crackerScript, ...crackerArgs]);
 
-    db.run(`INSERT INTO tool_logs (tool_name, category, input_params, output_text, error_text, status) VALUES (?, ?, ?, ?, ?, ?)`,
-      [tool, category, crackerArgs.join(' '), result.output, result.error, result.success ? 'SUCCESS' : 'FAILED']);
+    db.prepare(`INSERT INTO tool_logs (tool_name, category, input_params, output_text, error_text, status) VALUES (?, ?, ?, ?, ?, ?)`)
+      .run(tool, category, crackerArgs.join(' '), result.output, result.error, result.success ? 'SUCCESS' : 'FAILED');
 
     return res.json(result);
   }
@@ -122,14 +122,14 @@ app.post('/api/run', upload.single('file'), async (req, res) => {
       toolArgs.push(file.path);
     }
 
-    db.run(`INSERT INTO uploads (original_name, stored_name, file_path, file_type, size) VALUES (?, ?, ?, ?, ?)`,
-      [file.originalname, file.filename, file.path, file.mimetype, file.size]);
+    db.prepare(`INSERT INTO uploads (original_name, stored_name, file_path, file_type, size) VALUES (?, ?, ?, ?, ?)` )
+      .run(file.originalname, file.filename, file.path, file.mimetype, file.size);
   }
 
   const result = await runTool(tool, toolArgs);
 
-  db.run(`INSERT INTO tool_logs (tool_name, category, input_params, output_text, error_text, status) VALUES (?, ?, ?, ?, ?, ?)`,
-    [tool, category, toolArgs.join(' '), result.output, result.error, result.success ? 'SUCCESS' : 'FAILED']);
+  db.prepare(`INSERT INTO tool_logs (tool_name, category, input_params, output_text, error_text, status) VALUES (?, ?, ?, ?, ?, ?)`)
+    .run(tool, category, toolArgs.join(' '), result.output, result.error, result.success ? 'SUCCESS' : 'FAILED');
 
   res.json(result);
 });
@@ -167,10 +167,12 @@ app.post('/api/web/info', async (req, res) => {
 
 // History endpoint
 app.get('/api/history', (req, res) => {
-  db.all(`SELECT * FROM tool_logs ORDER BY timestamp DESC LIMIT 50`, [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
+  try {
+    const rows = db.prepare(`SELECT * FROM tool_logs ORDER BY timestamp DESC LIMIT 50`).all();
     res.json({ success: true, history: rows });
-  });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.listen(PORT, '0.0.0.0', () => {

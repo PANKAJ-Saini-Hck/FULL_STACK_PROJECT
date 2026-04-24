@@ -1,10 +1,12 @@
 # Use a lightweight Node.js image
-FROM node:18-slim
+FROM node:20-slim
 
 # Install system dependencies and CTF tools
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
+    build-essential \
+    g++ \
     steghide \
     libimage-exiftool-perl \
     binutils \
