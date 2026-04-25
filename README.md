@@ -7,8 +7,8 @@
 A powerful, full-stack Capture The Flag (CTF) forensic toolkit designed for security enthusiasts and professionals. This toolkit integrates multiple industry-standard security tools into a sleek, futuristic Cyberpunk-themed dashboard.
 
 ## 🚀 Live Demo
-- **Frontend**: [Link to be added by user]
-- **Backend API**: [Link to be added by user]
+- **Frontend**: https://full-stack-project-rho.vercel.app/
+- **Backend API**: https://full-stack-project-6-noy7.onrender.com/
 
 ## 🛠️ Integrated Tools
 | Category | Tools Included |
